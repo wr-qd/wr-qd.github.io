@@ -1,5 +1,5 @@
 ---
-layout: categories
-icon: fas fa-stream
+layout: archives
+icon: fa-solid fa-timeline
 order: 3
 ---
