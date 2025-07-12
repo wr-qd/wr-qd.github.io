@@ -5,7 +5,7 @@ order: 4
 ---
 
 <div style="overflow: auto; margin-bottom: 20px;">
-  <img src="/assets/img/prepic" alt="Avatar" style="float: left; width: 150px; height: 150px; border-radius: 50%; margin-right: 20px; margin-bottom: 10px; object-fit: cover; border: 2px solid #eee;">
+  <img src="/assets/img/prepic.png" style="float: left; width: 150px; height: 150px; border-radius: 50%; margin-right: 20px; margin-bottom: 10px; object-fit: cover; border: 2px solid #eee;">
   
   <div style="line-height: 1.6;">
     <p>ZJU 大三生物医学工程(bme)在读，喜欢看小说，漫画，玩游戏，很高兴认识你。</p>
