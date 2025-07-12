@@ -1,0 +1,270 @@
+---
+layout: page
+# All the Categories of posts with 3-level depth
+---
+
+{% include lang.html %}
+
+{% assign HEAD_PREFIX = 'h_' %}
+{% assign LIST_PREFIX = 'l_' %}
+{% assign SUBLIST_PREFIX = 'sl_' %}
+
+{% assign group_index = 0 %}
+
+{% assign sort_categories = site.categories | sort %}
+
+{% for category in sort_categories %}
+  {% assign category_name = category | first %}
+  {% assign posts_of_category = category | last %}
+  {% assign first_post = posts_of_category | first %}
+
+  {% if category_name == first_post.categories[0] %}
+    {% assign sub_categories = '' | split: '' %}
+    {% assign sub_sub_categories = '' | split: '' %}
+
+    {% for post in posts_of_category %}
+      {% assign second_category = post.categories[1] %}
+      {% assign third_category = post.categories[2] %}
+      
+      {% if second_category %}
+        {% unless sub_categories contains second_category %}
+          {% assign sub_categories = sub_categories | push: second_category %}
+        {% endunless %}
+      {% endif %}
+      
+      {% if third_category %}
+        {% assign full_sub_category = second_category | append: '::' | append: third_category %}
+        {% unless sub_sub_categories contains full_sub_category %}
+          {% assign sub_sub_categories = sub_sub_categories | push: full_sub_category %}
+        {% endunless %}
+      {% endif %}
+    {% endfor %}
+
+    {% assign sub_categories = sub_categories | sort %}
+    {% assign sub_categories_size = sub_categories | size %}
+    
+    {% assign sub_sub_categories = sub_sub_categories | sort %}
+    {% assign sub_sub_categories_size = sub_sub_categories | size %}
+
+    <div class="card categories">
+      <!-- top-category -->
+      <div
+        id="{{ HEAD_PREFIX }}{{ group_index }}"
+        class="card-header d-flex justify-content-between hide-border-bottom"
+      >
+        <span class="ms-2">
+          <i class="far fa-folder{% if sub_categories_size > 0 %}-open{% endif %} fa-fw"></i>
+
+          {% capture _category_url %}/categories/{{ category_name | slugify | url_encode }}/{% endcapture %}
+          <a href="{{ _category_url | relative_url }}" class="mx-2">{{ category_name }}</a>
+
+          <!-- content count -->
+          {% assign top_posts_size = site.categories[category_name] | size %}
+          <span class="text-muted small font-weight-light">
+            {% if sub_categories_size > 0 %}
+              {{ sub_categories_size }}
+              {% if sub_categories_size > 1 %}
+                {{
+                  site.data.locales[lang].categories.category_measure.plural
+                  | default: site.data.locales[lang].categories.category_measure
+                }}
+              {% else %}
+                {{
+                  site.data.locales[lang].categories.category_measure.singular
+                  | default: site.data.locales[lang].categories.category_measure
+                }}
+              {% endif -%}
+              ,
+            {% endif %}
+
+            {{ top_posts_size }}
+
+            {% if top_posts_size > 1 %}
+              {{
+                site.data.locales[lang].categories.post_measure.plural
+                | default: site.data.locales[lang].categories.post_measure
+              }}
+            {% else %}
+              {{
+                site.data.locales[lang].categories.post_measure.singular
+                | default: site.data.locales[lang].categories.post_measure
+              }}
+            {% endif %}
+          </span>
+        </span>
+
+        <!-- arrow -->
+        {% if sub_categories_size > 0 %}
+          <a
+            href="#{{ LIST_PREFIX }}{{ group_index }}"
+            data-bs-toggle="collapse"
+            aria-expanded="true"
+            aria-label="{{ HEAD_PREFIX }}{{ group_index }}-trigger"
+            class="category-trigger hide-border-bottom"
+          >
+            <i class="fas fa-fw fa-angle-down"></i>
+          </a>
+        {% else %}
+          <span data-bs-toggle="collapse" class="category-trigger hide-border-bottom disabled">
+            <i class="fas fa-fw fa-angle-right"></i>
+          </span>
+        {% endif %}
+      </div>
+      <!-- .card-header -->
+
+      <!-- Sub-categories -->
+      {% if sub_categories_size > 0 %}
+        <div id="{{ LIST_PREFIX }}{{ group_index }}" class="collapse show" aria-expanded="true">
+          <ul class="list-group">
+            {% for sub_category in sub_categories %}
+              {% assign sub_sub_categories_for_sub = '' | split: '' %}
+              
+              {% for sub_sub in sub_sub_categories %}
+                {% assign parts = sub_sub | split: '::' %}
+                {% if parts[0] == sub_category %}
+                  {% assign sub_sub_categories_for_sub = sub_sub_categories_for_sub | push: parts[1] %}
+                {% endif %}
+              {% endfor %}
+              
+              {% assign sub_sub_categories_for_sub = sub_sub_categories_for_sub | uniq | sort %}
+              {% assign sub_sub_size = sub_sub_categories_for_sub | size %}
+              
+              <li class="list-group-item">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <i class="far fa-folder{% if sub_sub_size > 0 %}-open{% endif %} fa-fw"></i>
+
+                    {% capture _sub_ctg_url %}/categories/{{ sub_category | slugify | url_encode }}/{% endcapture %}
+                    <a href="{{ _sub_ctg_url | relative_url }}" class="mx-2">{{ sub_category }}</a>
+
+                    {% assign sub_posts = site.categories[sub_category] | where_exp: "post", "post.categories[1] == sub_category" %}
+                    {% assign sub_posts_size = sub_posts | size %}
+                    
+                    <span class="text-muted small font-weight-light">
+                      {% if sub_sub_size > 0 %}
+                        {{ sub_sub_size }}
+                        {% if sub_sub_size > 1 %}
+                          {{
+                            site.data.locales[lang].categories.sub_category_measure.plural
+                            | default: site.data.locales[lang].categories.sub_category_measure
+                          }}
+                        {% else %}
+                          {{
+                            site.data.locales[lang].categories.sub_category_measure.singular
+                            | default: site.data.locales[lang].categories.sub_category_measure
+                          }}
+                        {% endif -%}
+                        ,
+                      {% endif %}
+
+                      {{ sub_posts_size }}
+
+                      {% if sub_posts_size > 1 %}
+                        {{
+                          site.data.locales[lang].categories.post_measure.plural
+                          | default: site.data.locales[lang].categories.post_measure
+                        }}
+                      {% else %}
+                        {{
+                          site.data.locales[lang].categories.post_measure.singular
+                          | default: site.data.locales[lang].categories.post_measure
+                        }}
+                      {% endif %}
+                    </span>
+                  </div>
+                  
+                  <!-- Sub-sub-category arrow -->
+                  {% if sub_sub_size > 0 %}
+                    <a
+                      href="#{{ SUBLIST_PREFIX }}{{ group_index }}_{{ forloop.index }}"
+                      data-bs-toggle="collapse"
+                      aria-expanded="false"
+                      aria-label="{{ SUBLIST_PREFIX }}{{ group_index }}_{{ forloop.index }}-trigger"
+                      class="category-trigger"
+                    >
+                      <i class="fas fa-fw fa-angle-down"></i>
+                    </a>
+                  {% endif %}
+                </div>
+                
+                <!-- Sub-sub-categories -->
+                {% if sub_sub_size > 0 %}
+                  <div id="{{ SUBLIST_PREFIX }}{{ group_index }}_{{ forloop.index }}" class="collapse mt-2">
+                    <ul class="list-group sub-sub-list">
+                      {% for sub_sub_category in sub_sub_categories_for_sub %}
+                        <li class="list-group-item py-1">
+                          <i class="far fa-folder fa-fw"></i>
+
+                          {% capture _sub_sub_ctg_url %}/categories/{{ sub_sub_category | slugify | url_encode }}/{% endcapture %}
+                          <a href="{{ _sub_sub_ctg_url | relative_url }}" class="ms-2">{{ sub_sub_category }}</a>
+
+                          {% assign sub_sub_posts = site.categories[sub_sub_category] | where_exp: "post", "post.categories[2] == sub_sub_category" %}
+                          {% assign sub_sub_posts_size = sub_sub_posts | size %}
+                          
+                          <span class="text-muted small font-weight-light ms-2">
+                            {{ sub_sub_posts_size }}
+
+                            {% if sub_sub_posts_size > 1 %}
+                              {{
+                                site.data.locales[lang].categories.post_measure.plural
+                                | default: site.data.locales[lang].categories.post_measure
+                              }}
+                            {% else %}
+                              {{
+                                site.data.locales[lang].categories.post_measure.singular
+                                | default: site.data.locales[lang].categories.post_measure
+                              }}
+                            {% endif %}
+                          </span>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+    </div>
+    <!-- .card -->
+
+    {% assign group_index = group_index | plus: 1 %}
+  {% endif %}
+{% endfor %}
+
+<style>
+  /* 添加三级分类的样式 */
+  .sub-sub-list {
+    margin-left: 1.5rem;
+    border-left: 2px solid rgba(0,0,0,0.1);
+    padding-left: 0.5rem;
+  }
+  
+  .sub-sub-list .list-group-item {
+    background-color: rgba(0,0,0,0.03);
+    border: none;
+    border-radius: 4px;
+    padding: 0.25rem 0.75rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  .sub-sub-list .fa-folder {
+    font-size: 0.9em;
+  }
+  
+  .category-trigger {
+    cursor: pointer;
+    padding: 0.25rem;
+    color: #6c757d;
+    transition: transform 0.2s;
+  }
+  
+  .category-trigger:hover {
+    color: #0d6efd;
+  }
+  
+  .category-trigger[aria-expanded="true"] i {
+    transform: rotate(180deg);
+  }
+</style>
