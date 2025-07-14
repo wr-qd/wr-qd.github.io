@@ -4,7 +4,7 @@ icon: fas fa-info-circle
 order: 4
 ---
 
-<img src="/assets/img/about.png" alt="Avatar" style="float: left; width: 150px; height: 150px; margin-right: 20px; border-radius: 50%; object-fit: cover; border: 2px solid #eee;">
+<img src="/assets/img/about.jpg" alt="Avatar" style="float: left; width: 150px; height: 150px; margin-right: 20px; border-radius: 50%; object-fit: cover; border: 2px solid #eee;">
 
 Hello~ 你好呀，我是wrqd ^^
 
