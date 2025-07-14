@@ -7,4 +7,3 @@ tags: [course]     # TAG names should always be lowercase
 
 # lecture one
 ## different types
-## 
