@@ -30,3 +30,5 @@ Apply knowledge to topics in planning & perception
 - path/ trajectory/ motion planning
 - image formation, processing and analysis, visual tracking, vision-based control, image-guided robotics
   
+## the whole structure of the course and the knowledge
+![Desktop View](/assets/img/favicons/屏幕截图 2025-07-14 224711.png){: width="972" height="589" }
