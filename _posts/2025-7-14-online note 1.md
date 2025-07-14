@@ -31,4 +31,4 @@ Apply knowledge to topics in planning & perception
 - image formation, processing and analysis, visual tracking, vision-based control, image-guided robotics
   
 ## the whole structure of the course and the knowledge
-![Desktop View](/assets/img/favicons/屏幕截图 2025-07-14 224711.png){: width="972" height="589" }
+![Desktop View](assets/img/robotics1.png){: width="972" height="589" }
