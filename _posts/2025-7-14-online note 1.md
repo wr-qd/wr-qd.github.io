@@ -99,3 +99,4 @@ for Matrix:
 
 完整位姿 = 位置 + 方向 → 齐次变换矩阵
 for check
+![Desktop View](assets/img/robotics3.png){: width="972" height="589" }
